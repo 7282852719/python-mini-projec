@@ -1,0 +1,73 @@
+#Method to calculate the number of days between two input dates
+def daysBetweenDates(name, DOB, CurrentDate):
+        #Two months arrays to handle the leap and non-leap year
+        monthdays1 = [31, 28, 31, 30, 31, 30,  
+                        31, 31, 30, 31, 30, 31]
+        monthdays2= [31, 29, 31, 30, 31, 30,  
+                        31, 31, 30, 31, 30, 31]
+                        
+        #Split both date strings based on '/'
+        DOB1=DOB.split('/')
+        CurrentDate1=CurrentDate.split('/')
+        
+        #Get the day, month and year value from the strings using slicing operator
+        day1,month1,year1=DOB1[:]
+        day2,month2,year2=CurrentDate1[:]
+        
+        #Nested method to calculate the number of days
+        def countDays(day,month,year):
+            n=0
+            #Looping through a year
+            for i in range(0,year):
+                #Call nested method to check if the year is a leap year
+                if isleap(i):
+                    #if yes, no of days is 366
+                    n+=366
+                else:
+                    #else, no of days is 365
+                    n+=365
+            n+=day
+            
+            #Again, if it's a leap year, take value from the second month array created above and add it to number of days
+            if isleap(year):
+                for i in range(0,month-1):
+                    n+=monthdays2[i]
+            else:
+                for i in range(0,month-1):
+                    n+=monthdays1[i]       
+            return n
+            
+        #implement leap year method to check if the year is a leap year or not
+        #if the year is a multiple of 4,100 and 400, it's a leap year
+        def isleap(year):
+            if (year%4)==0:
+                if (year%100==0):
+                    if (year%400==0):
+                        return True
+                    else:
+                        return False
+                else:
+                    return True
+            else:
+                return False
+                
+        #get the number of days for dob by calling a method countDays implemented above
+        y1=countDays(int(day1),int(month1),int(year1))
+        #get the number of days for CurrentDate
+        y2=countDays(int(day2),int(month2),int(year2))
+        
+        #print the result
+        print()
+        print('Congrats '+name+'! You survived in this world for '+str(abs(y2-y1))+' days.')
+        
+#Starting of the application        
+print('Welcome to Days Calculator Application!')
+print()
+
+#Taking name, dob and current date as a user input
+name = input('Please enter your Name: ')
+DOB = input('Welcome '+name+'! Please Enter your DOB in DD/MM/YYYY format: ')
+CurrentDate = input('Please Enter current date in DD/MM/YYYY format: ')
+
+#calling method to get the number of days between two dates
+daysBetweenDates(name, DOB, CurrentDate)
